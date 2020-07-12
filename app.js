@@ -10,22 +10,9 @@ class Book {
 // UI Class: handles UI tasks
 class UI {
   static displayBooks() {
-    const StoredBooks = [
-      {
-        title: 'Book One',
-        author: 'John Doe',
-        isbn: '34344343'
-      },
-      {
-        title: 'Book Two',
-        author: 'Jane Doe',
-        isbn: '64304241'
-      }
-    ];
+    const books = Store.getBooks();
 
-    const books = StoredBooks;
-
-    books.forEach(book => UI.addBookToList(book));
+    books.forEach((book) => UI.addBookToList(book));
   }
 
   static addBookToList(book) {
@@ -68,6 +55,36 @@ class UI {
 }
 
 // Store Class: handles storage
+class Store {
+  static getBooks() {
+    let books;
+    if(localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
+
+    return books;
+  }
+
+  static addBook(book) {
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static removeBook(isbn) {
+    const books = Store.getBooks();
+
+    books.forEach((book, index) => {
+      if (book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+}
 
 
 // Event: display books
@@ -92,6 +109,9 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
     } else {
       // add book to UI
       UI.addBookToList(book);
+
+      // add book to store
+      Store.addBook(book);
 
       // show success message
       UI.showAlert('Book added to the list!', 'success');
