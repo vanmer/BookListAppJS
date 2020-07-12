@@ -88,17 +88,17 @@ document.querySelector('#book-form').addEventListener('submit', (e) => {
 
     // validate
     if (title === '' && author === '' && isbn === '') {
-      UI.showAlert('Please fill in all fields', 'danger');
+      UI.showAlert('Please fill in all fields!', 'danger');
     } else {
       // add book to UI
       UI.addBookToList(book);
 
+      // show success message
+      UI.showAlert('Book added to the list!', 'success');
+
       // clear fields after adding book
       UI.clearFields();
     }
-
-
-
   });
 
 
