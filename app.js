@@ -48,7 +48,7 @@ class UI {
 
 
 // Event: display books
-
+document.addEventListener('DOMContentLoaded', UI.displayBooks);
 
 // Event: add a book
 
